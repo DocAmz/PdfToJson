@@ -1,0 +1,25 @@
+{
+  "name": "pdf-to-json",
+  "version": "1.0.0",
+  "description": "A Node.js RESTful API To convert pdf file to json data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DocAmz/PdfToJson.git"
+  },
+  "author": "DocAmaze",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DocAmz/PdfToJson/issues"
+  },
+  "homepage": "https://github.com/DocAmz/PdfToJson#readme",
+  "dependencies": {
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.28"
+  }
+}
