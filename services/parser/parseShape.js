@@ -2,26 +2,40 @@ module.exports = {
   shapeParser: function(content) {
     console.log('Parsing shapes...');
     const shapes = [];
+    let currentPath = [];
 
-    // Iterate through each operator in the content stream
-    for (let i = 0; i < content.length; i++) {
-        const op = content[i];
+    for (let i = 0; i < content.fnArray.length; i++) {
+        const operation = content.fnArray[i];
+        const args = content.argsArray[i];
 
-        // Check if the operator is for drawing a path
-        if (op.fn === pdfjs.OPS.constructPath) {
-            // Extract the path data
-            const pathData = op.args;
-            // Store the path data as a shape
-            shapes.push({
-                type: 'path',
-                data: pathData
-            });
+        if (args === null || args === undefined) {
+            continue; // Skip if args are null or undefined
         }
-        // Additional checks for other shape drawing operators can be added here
-        // For example: rectangles, circles, lines, etc.
+
+        switch (operation) {
+            case 70: // MoveTo
+                if (currentPath.length > 0) {
+                    shapes.push(currentPath); // Save previous path
+                    currentPath = []; // Start a new path
+                }
+                currentPath.push({ type: 'MoveTo', x: args[0], y: args[1] });
+                break;
+            case 71: // LineTo
+                currentPath.push({ type: 'LineTo', x: args[0], y: args[1] });
+                break;
+            case 12: // ClosePath
+                currentPath.closed = true;
+                break;
+            default:
+                // Ignore other operations for now
+                break;
+        }
     }
 
-    console.log('Shapes parsed:', shapes);
-    return shapes;
-}
+    if (currentPath.length > 0) {
+        shapes.push(currentPath); // Save the last path
+    }
+        console.log('Shapes parsed:', shapes);
+        return shapes;
+    }
 }
